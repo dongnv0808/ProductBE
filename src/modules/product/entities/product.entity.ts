@@ -23,16 +23,16 @@ export class Product {
   is_deleted: number;
 
   @Column('datetime')
-  created_update: string;
+  created_date: string;
 
   @Column('datetime')
   updated_date: string;
 
-  @Column('datetime')
-  created_by: string;
+  @Column('bigint')
+  created_by: number;
 
-  @Column('nvarchar')
-  updated_by: string;
+  @Column('bigint')
+  updated_by: number;
 
   @Column('timestamp')
   _timestamp: any;

@@ -14,6 +14,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import PaginationParams from '../pagination/paginationParams';
 import { ProductSampleService } from './product_sample.service';
 
 @ApiTags('productspl')
@@ -21,9 +22,9 @@ import { ProductSampleService } from './product_sample.service';
 export class ProductSampleController {
   constructor(private readonly productSampleService: ProductSampleService) {}
 
-  @Get('test')
-  getProductSample() {
-    console.log('🚀️ ~ 123', 123);
-    return this.productSampleService.getProductSample();
+  @Get('getProductSample')
+  getProductSample(@Query() query: PaginationParams) {
+    console.log('🚀️ ~ ', query.offset, query.limit);
+    return this.productSampleService.getProductSample(query.offset, query.limit);
   }
 }
