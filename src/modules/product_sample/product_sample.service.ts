@@ -31,7 +31,5 @@ export class ProductSampleService {
       console.log('🚀️ ~ error getProductSample', message);
       productSample = [];
     }
-
-    return productSample;
   }
 }
