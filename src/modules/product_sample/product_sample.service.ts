@@ -28,7 +28,7 @@ export class ProductSampleService {
 
     } catch (error) {
       const message = error?.response?.data ?? error?.response ?? error;
-      console.log('🚀️ ~ error getUserWorkshiftInDay', message);
+      console.log('🚀️ ~ error getProductSample', message);
       productSample = [];
     }
 
