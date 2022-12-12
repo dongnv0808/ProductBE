@@ -6,6 +6,7 @@ import { configuration } from './config/configuration';
 import { AttributesModule } from './modules/attributes/attributes.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { HTTPModule } from './modules/http/http.module';
+import { ProductAtbModule } from './modules/product-attribute/product-attribute.module';
 import { ProductModule } from './modules/product/product.module';
 // import { ProductModule } from './modules/product/product.module';
 
@@ -18,6 +19,7 @@ import { ProductModule } from './modules/product/product.module';
     }),
     AttributesModule,
     ProductModule,
+    ProductAtbModule,
     HTTPModule,
     DatabaseModule
   ],

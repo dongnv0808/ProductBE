@@ -59,7 +59,7 @@ export class ProductService {
       if (attId.length > 0) {
         return {
           status: HttpStatus.NOT_FOUND,
-          message: 'Không tìm thấy sản phẩm!',
+          message: 'Sản phẩm đã tồn tại!',
         };
       }
       else {
@@ -93,12 +93,11 @@ export class ProductService {
     if (payload.name == "") {
       payload.name = product.name
     }
-
     if (payload.state == "") {
       payload.state = product.state
     }
     if (payload.status == "") {
-      payload.state = product.state
+      payload.state = product.status
     }
     try {
       const query = `UPDATE products SET name ='${payload.name}', state='${payload.state}', status='${payload.status}',is_deleted = '${payload.is_deleted}', updated_date = '${currentDay}'  WHERE code = '${product[0].code}'`
