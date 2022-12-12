@@ -4,6 +4,7 @@ import { CreateAttributeDto } from './dto/create-attributes';
 import { UpdateAttributeDto } from './dto/update-attribute.dto';
 import { CreateAttributeGrDto } from './dto/create-attribute-group.dto';
 import { UpdateAttributeGrDto } from './dto/update-attribute-group.dto';
+import { CreateAttributeAtbGrDto } from './dto/attribute-attribute-group.dto';
 
 @Controller('attributes')
 export class AttributesController {
@@ -35,5 +36,9 @@ export class AttributesController {
     @Put('group/:code')
     async updateAttributeGr(@Param('code') code:string, @Body() payload : UpdateAttributeGrDto) {
         return this._attributesService.updateAttributeGr(code, payload);
+    }
+    @Post('group-atb')
+    async createAttAttGr(@Body() payload : CreateAttributeAtbGrDto){
+        return this._attributesService.createAtbGroups(payload)
     }
 }   

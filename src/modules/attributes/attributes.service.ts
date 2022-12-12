@@ -8,6 +8,7 @@ import { UpdateAttributeDto } from './dto/update-attribute.dto';
 import { CreateAttributeDto } from './dto/create-attributes';
 import { CreateAttributeGrDto } from './dto/create-attribute-group.dto';
 import { UpdateAttributeGrDto } from './dto/update-attribute-group.dto';
+import { CreateAttributeAtbGrDto } from './dto/attribute-attribute-group.dto';
 
 @Injectable()
 export class AttributesService {
@@ -128,7 +129,7 @@ export class AttributesService {
       const atb_gr = await this.findAttributeGroup(code);
 
 
-    if (!atb_gr) throw new NotFoundException(`Không tìm thấy thuộc tính `);
+    if (!atb_gr) throw new NotFoundException(`Không tìm nhóm thấy thuộc tính `);
     const currentDay = dayjs(Date()).format('DD/MM/YYYY HH:mm:ss');
     if (payload.name == '') {
       payload.name = atb_gr.name;
@@ -146,6 +147,28 @@ export class AttributesService {
     
   }
 
+  async createAtbGroups(payload: CreateAttributeAtbGrDto){ 
+    const currentDay = dayjs(Date()).format('DD/MM/YYYY HH:mm:ss');
+    const atbGroup = await this.findAttributeGroup(payload.attribute_group_code)
+    
+    const atb = await this.getAttributeById(payload.attribute_code)
+
+    try{
+      if(atbGroup.length < 0)  throw new NotFoundException(`Không tìm thấy nhóm thuộc tính `)
+      if(atb.length < 0)  throw new NotFoundException(`Không tìm thấy thuộc tính `)
+        const query = `INSERT INTO [Attribute_attribute_groups] (attribute_id,attribute_name, attribute_code,attribute_group_id,attribute_group_name,attribute_group_code, created_date, updated_date, created_by, updated_by) VALUES (${atb[0].id},'${atb[0].name}', '${atb[0].code}',${atbGroup[0].id},'${atbGroup[0].name}','${atbGroup[0].code}', '${currentDay}', '${currentDay}', 0, 0)`
+      await this.productDatasource.query(query)
+        return {
+            status: HttpStatus.OK,
+            message: 'Create attribute group success',
+          };
+    }
+    catch (err) {
+        console.log(err);
+      }
+      
+  }
+ 
   
   
 }
