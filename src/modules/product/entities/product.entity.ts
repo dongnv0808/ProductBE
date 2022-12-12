@@ -1,3 +1,4 @@
+import * as dayjs from 'dayjs';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
@@ -6,7 +7,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
-
+  
   @Column('nvarchar')
   name: string;
 
@@ -19,20 +20,20 @@ export class Product {
   @Column('nvarchar')
   status: string;
 
-  @Column('bit')
+  @Column('bit',{default: 0})
   is_deleted: number;
 
-  @Column('datetime')
+  @Column('datetime', {default: dayjs(Date()).format("DD/MM/YYYY HH:mm:ss")})
   created_date: string;
 
-  @Column('datetime')
+  @Column('datetime', {default: dayjs(Date()).format("DD/MM/YYYY HH:mm:ss")})
   updated_date: string;
 
-  @Column('bigint')
-  created_by: number;
+  @Column('nvarchar', {default: 0})
+  created_by: string;
 
-  @Column('bigint')
-  updated_by: number;
+  @Column('nvarchar', {default: 0})
+  updated_by: string;
 
   @Column('timestamp')
   _timestamp: any;
