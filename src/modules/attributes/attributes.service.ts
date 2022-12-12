@@ -4,7 +4,8 @@ import { DataSource } from 'typeorm';
 
 import { AttributesDto } from './dto/attributes.dto';
 import * as dayjs from 'dayjs'
-import { UpdateAttribute } from './dto/update-attribute.dto';
+import {  UpdateAttributeDto } from './dto/update-attribute.dto';
+import { CreateAttributeDto } from './dto/create-attributes';
 @Injectable()
 export class AttributesService {
     constructor (
@@ -15,7 +16,7 @@ export class AttributesService {
         let  attributeList: any[];
         try {
         const query = `SELECT 
-        id,name, code 
+        id,name, code, is_deleted, created_date, updated_date
         FROM Attributes ps 
         order by id DESC 
         OFFSET ${offset} rows
@@ -44,7 +45,7 @@ export class AttributesService {
         return attribute
     }
 
-    async createAttribute(payload : {name, code, is_deleted, created_date, updated_date, created_by, updated_by}) {
+    async createAttribute(payload : CreateAttributeDto ) {
         try {
             const  currentDay = dayjs(Date()).format("DD/MM/YYYY HH:mm:ss");
             const attId = await this.getAttributeById(payload.code)      
@@ -71,13 +72,15 @@ export class AttributesService {
         
  
     }
-    async updateAttribute(code: string, payload: UpdateAttribute) {
+    async updateAttribute(code: string, payload: UpdateAttributeDto) {
         const atb  = await this.getAttributeById(code)
         if(!atb) throw new NotFoundException(`Không tìm thấy thuộc tính `);
-        
+        const  currentDay = dayjs(Date()).format("DD/MM/YYYY HH:mm:ss");
+        if(payload.name == "") {
+            payload.name = atb.name
+        }
         try {
-            const query = `UPDATE Attributes SET name ='${payload.name}', is_deleted = '${payload.is_deleted}' WHERE code = '${atb[0].code}'`
-            
+            const query = `UPDATE Attributes SET name ='${payload.name}', is_deleted = '${payload.is_deleted}', updated_date = '${currentDay}'  WHERE code = '${atb[0].code}'`  
             const newAttribute = await this.productDatasource.query(query)
         }
         catch (err) {

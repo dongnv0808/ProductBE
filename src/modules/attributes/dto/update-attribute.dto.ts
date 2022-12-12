@@ -1,11 +1,12 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 
-export class UpdateAttribute {
-    @IsNotEmpty()
+export class UpdateAttributeDto {
+    @IsOptional()
     @IsString()
     name: string;
 
+    @IsOptional()
     @IsString()
     is_deleted: number;
 }

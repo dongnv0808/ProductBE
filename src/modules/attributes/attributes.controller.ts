@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { AttributesService } from './attributes.service';
 import { CreateAttributeDto } from './dto/create-attributes';
-import { UpdateAttribute } from './dto/update-attribute.dto';
+import { UpdateAttributeDto } from './dto/update-attribute.dto';
 
 @Controller('attributes')
 export class AttributesController {
@@ -20,7 +20,7 @@ export class AttributesController {
         return await this._attributesService.createAttribute(attributeDto);
     }
     @Put('/:code')
-    async updateAttribute(@Param('code') code:string, @Body() payload : UpdateAttribute) {
+    async updateAttribute(@Param('code') code:string, @Body() payload : UpdateAttributeDto) {
         return this._attributesService.updateAttribute(code, payload);
     }
 }   
