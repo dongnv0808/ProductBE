@@ -1,5 +1,7 @@
-import { Controller, Get, HttpStatus, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { AttributesService } from './attributes.service';
+import { CreateAttributeDto } from './dto/create-attributes';
+import { UpdateAttribute } from './dto/update-attribute.dto';
 
 @Controller('attributes')
 export class AttributesController {
@@ -8,12 +10,17 @@ export class AttributesController {
     ){}
     @Get()
     async showAllAttributes(@Query() query:{offset:number, limit: number}) {
-        const attributes = await this._attributesService.showAll(query.offset,query.limit);
-        return {
-            statusCode: HttpStatus.OK,
-            message:"attributes successfully",
-            attributes
-        }
+        return  await this._attributesService.showAll(query.offset,query.limit);
     }
-
+    @Post()
+    async createAttribute(
+        @Body() attributeDto : CreateAttributeDto
+    ) {
+      
+        return await this._attributesService.createAttribute(attributeDto);
+    }
+    @Put('/:code')
+    async updateAttribute(@Param('code') code:string, @Body() payload : UpdateAttribute) {
+        return this._attributesService.updateAttribute(code, payload);
+    }
 }   

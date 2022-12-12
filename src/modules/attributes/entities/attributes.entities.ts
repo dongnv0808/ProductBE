@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import * as dayjs from 'dayjs'
 @Entity({
   name: 'ATTRIBUTES',
 })
@@ -16,16 +16,16 @@ export class AttributesEntity {
   @Column('bit',{default: 0})
   is_deleted: number;
 
-  @Column('datetime')
+  @Column('datetime', {default: dayjs(Date()).format("DD/MM/YYYY HH:mm:ss")})
   created_date: string;
 
-  @Column('datetime')
+  @Column('datetime', {default: dayjs(Date()).format("DD/MM/YYYY HH:mm:ss")})
   updated_date: string;
 
-  @Column('nvarchar')
+  @Column('nvarchar', {default: 0})
   created_by: string;
 
-  @Column('nvarchar')
+  @Column('nvarchar', {default: 0})
   updated_by: string;
 
   @Column('timestamp')

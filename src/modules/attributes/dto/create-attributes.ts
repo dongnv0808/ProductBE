@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString } from "class-validator";
 
+import { IsNotEmpty , IsString} from 'class-validator';
 
-export class AttributesDto {
+export class CreateAttributeDto {
     @IsNotEmpty()
     @IsString()
     name: string;
@@ -24,5 +24,4 @@ export class AttributesDto {
 
     @IsString()
     updated_by: string;
-    
 }
