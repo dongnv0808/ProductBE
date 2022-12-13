@@ -12,28 +12,34 @@ import { ApiOperation } from '@nestjs/swagger';
 export class AttributesController {
     constructor(
         private _attributesService: AttributesService
-    ){}
+    ) { }
     @Get()
-    @ApiOperation({summary: 'List all attributes',})
-    async showAllAttributes(@Query() query:{offset:number, limit: number}) {
-        return  await this._attributesService.showAllAttributes(query.offset,query.limit);
+    @ApiOperation({ summary: 'List all attributes', })
+    async showAllAttributes(@Query() query: { offset: number, limit: number }) {
+        return await this._attributesService.showAllAttributes(query.offset, query.limit);
     }
+
+    @Get('/:code')
+    async getAttributeByCode(@Param('code') code: string) {
+        return await this._attributesService.findAttribute(code);
+    }
+
     @Post()
-    @ApiOperation({summary: 'Create attributes',})
+    @ApiOperation({ summary: 'Create attributes', })
 
     async createAttribute(
-        @Body() attributeDto : CreateAttributeDto
+        @Body() attributeDto: CreateAttributeDto
     ) {
-      
+
         return await this._attributesService.createAttribute(attributeDto);
     }
     @Put('/:code')
-    async updateAttribute(@Param('code') code:string, @Body() payload : UpdateAttributeDto) {
+    async updateAttribute(@Param('code') code: string, @Body() payload: UpdateAttributeDto) {
         return this._attributesService.updateAttribute(code, payload);
     }
     @Get('group')
-    async showAllAttributeGr(@Query() query:{offset:number, limit: number}) {
-        return  await this._attributesService.showAllAttGr(query.offset,query.limit);
+    async showAllAttributeGr(@Query() query: { offset: number, limit: number }) {
+        return await this._attributesService.showAllAttGr(query.offset, query.limit);
     }
 
     @Post('group')
@@ -43,15 +49,20 @@ export class AttributesController {
         return await this._attributesService.createAttributeGr(attributeGroup);
     }
     @Put('group/:code')
-    async updateAttributeGr(@Param('code') code:string, @Body() payload : UpdateAttributeGrDto) {
+    async updateAttributeGr(@Param('code') code: string, @Body() payload: UpdateAttributeGrDto) {
         return this._attributesService.updateAttributeGr(code, payload);
     }
     @Post('group-atb')
-    async createAtbAtbGr(@Body() payload : CreateAttributeAtbGrDto){
+    async createAtbAtbGr(@Body() payload: CreateAttributeAtbGrDto) {
         return this._attributesService.createAtbAtbGr(payload)
     }
     @Put('group-atb/:id')
-    async updateAtbAtbGr(@Param('id') id:number,@Body() payload : UpdateAttributeAtbGrDto) {
-        return this._attributesService.updateAtbAtbGr(id,payload)
+    async updateAtbAtbGr(@Param('id') id: number, @Body() payload: UpdateAttributeAtbGrDto) {
+        return this._attributesService.updateAtbAtbGr(id, payload)
+    }
+
+    @Get('group/:code')
+    async getAttributeGrByCode(@Param('code') code: string) {
+        return await this._attributesService.findAttributeGroup(code);
     }
 }   

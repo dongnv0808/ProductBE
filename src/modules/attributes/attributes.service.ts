@@ -97,7 +97,7 @@ export class AttributesService {
 
   async findAttributeGroup(code: string) {
     const attributeGr = await this.productDatasource.query(
-      `SELECT * FROM Attribute_groups WHERE code = '${code}'`,
+      `SELECT * FROM Attribute_groups WHERE code like '%${code}'`,
     );
     if (!attributeGr)
       throw new NotFoundException(`attribute group not found `);

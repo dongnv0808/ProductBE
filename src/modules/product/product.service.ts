@@ -45,7 +45,7 @@ export class ProductService {
     }
 
   }
-  async getProductById(code: string) {
+  async getProductByCode(code: string) {
     const product = await this.productDatasource.query(`SELECT * FROM PRODUCTS WHERE code = '${code}'`)
     if (!product) throw new NotFoundException(`Không tìm thấy sp `)
     return product
@@ -54,7 +54,7 @@ export class ProductService {
   async createProduct(payload: CreateProductDto) {
     try {
       const currentDay = dayjs(Date()).format("YYYY/MM/DD HH:mm:ss");
-      const attId = await this.getProductById(payload.code)
+      const attId = await this.getProductByCode(payload.code)
       let product: CreateProductDto
       if (attId.length > 0) {
         return {
@@ -76,7 +76,7 @@ export class ProductService {
         }
         const query = `INSERT INTO [Products] (name, code, state, status,is_deleted, created_date, updated_date, created_by, updated_by) VALUES ('${product.name}', '${product.code}', '${product.state}', '${product.status}', 0, '${currentDay}', '${currentDay}', 0, 0)`;
         await this.productDatasource.query(query);
-        const result = await this.getProductById(payload.code);
+        const result = await this.getProductByCode(payload.code);
         return {
           status: HttpStatus.OK,
           message: 'Thêm mới sản phẩm thành công',
@@ -94,7 +94,7 @@ export class ProductService {
 
   }
   async updateProduct(code: string, payload: UpdateProductDto) {
-    const product = await this.getProductById(code)
+    const product = await this.getProductByCode(code)
     let newProduct: UpdateProductDto;
     const currentDay = dayjs(Date()).format("YYYY/MM/DD HH:mm:ss");
     if(!product[0].is_deleted){
@@ -111,7 +111,7 @@ export class ProductService {
     try {
       const query = `UPDATE products SET name='${newProduct.name}', state='${newProduct.state}', status='${newProduct.status}',is_deleted=${newProduct.is_deleted}, updated_date = '${currentDay}'  WHERE code = '${code}'`
       await this.productDatasource.query(query)
-      newProduct = await this.getProductById(code);
+      newProduct = await this.getProductByCode(code);
       return {
         status: HttpStatus.OK,
         message: 'Update product success',

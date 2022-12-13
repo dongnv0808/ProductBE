@@ -26,12 +26,19 @@ export class ProductAtbController {
   async showAllProductAtb(@Query() query: { offset: number, limit: number }) {
     return await this.productAtbService.showAll(query.offset, query.limit);
   }
+
+  @Get('/:id')
+  async getProductByCode(@Param('id') id: number) {
+    return await this.productAtbService.getProductAtbById(id);
+  }
+
   @Post()
   async createProductAtb(
     @Body() productDto: CreateProductAtbDto
   ) {
     return await this.productAtbService.createProductAtb(productDto);
   }
+
   @Put('/:id')
   async updateProductAtb(@Param('id') id: number, @Body() payload: UpdateProductAtbDto) {
     return this.productAtbService.updateProductAtb(id, payload);
