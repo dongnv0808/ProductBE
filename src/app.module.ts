@@ -6,8 +6,9 @@ import { configuration } from './config/configuration';
 import { AttributesModule } from './modules/attributes/attributes.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { HTTPModule } from './modules/http/http.module';
+import { ProductAtbModule } from './modules/product-attribute/product-attribute.module';
+import { ProductModule } from './modules/product/product.module';
 // import { ProductModule } from './modules/product/product.module';
-import { ProductSampleModule } from './modules/product_sample/product_sample.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { ProductSampleModule } from './modules/product_sample/product_sample.mod
       load: [configuration]
     }),
     AttributesModule,
-    ProductSampleModule,
+    ProductModule,
+    ProductAtbModule,
     HTTPModule,
     DatabaseModule
   ],
