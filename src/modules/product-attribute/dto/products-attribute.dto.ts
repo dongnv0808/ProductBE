@@ -1,36 +1,41 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 
 export class ProductAtbDto {
     @IsNotEmpty()
-    @IsString()
-    name: string;
+    @IsNumber()
+    attribute_id: number;
     
     @IsNotEmpty()
     @IsString()
-    code: string;
+    attribute_name: string;
 
     @IsNotEmpty()
     @IsString()
-    state: string;
+    attribute_code: string;
 
     @IsNotEmpty()
-    @IsString()
-    status: string;
-
-    @IsString()
-    is_deleted: string;
-
-    @IsString()
-    created_date: string;
-
-    @IsString()
-    updated_date: string;
-
-    @IsString()
-    created_by: string;
-
-    @IsString()
-    updated_by: string;
+    @IsNumber()
+    attribute_unit: number;
     
+    @IsNotEmpty()
+    @IsString()
+    attribute_value: string;
+
+    @IsNotEmpty()
+    @IsNumber()
+    product_id: number;
+
+    @IsNotEmpty()
+    @IsString()
+    product_name: string;
+    
+    @IsNotEmpty()
+    @IsString()
+    product_code: string;
+
+
+    @IsNotEmpty()
+    @IsNumber()
+    is_deleted: number;
 }

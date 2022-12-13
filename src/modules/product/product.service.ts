@@ -55,6 +55,7 @@ export class ProductService {
     try {
       const currentDay = dayjs(Date()).format("DD/MM/YYYY HH:mm:ss");
       const attId = await this.getProductById(payload.code)
+      console.log('🚀️ ~ attId', attId);
 
       if (attId.length > 0) {
         return {
@@ -87,20 +88,20 @@ export class ProductService {
   }
   async updateProduct(code: string, payload: UpdateProductDto) {
     const product = await this.getProductById(code)
-    let newProduct = {}
-    if (!product) throw new NotFoundException(`Không tìm thấy thuộc tính `);
-    const currentDay = dayjs(Date()).format("DD/MM/YYYY HH:mm:ss");
-    if (payload.name == "") {
-      payload.name = product.name
+    let newProduct: ProductDto;
+    console.log(product)
+    if (!product) throw new NotFoundException(`Không tìm thấy sp `);
+    const currentDay = dayjs(Date()).format("YYYY/MM/DD HH:mm:ss");
+    newProduct = {
+      name: payload.name || product.name,
+      code: code,
+      state: payload.state || product.state,
+      status: payload.status || product.status,
+      is_deleted: payload.is_deleted || product.is_deleted
     }
-    if (payload.state == "") {
-      payload.state = product.state
-    }
-    if (payload.status == "") {
-      payload.state = product.status
-    }
+
     try {
-      const query = `UPDATE products SET name ='${payload.name}', state='${payload.state}', status='${payload.status}',is_deleted = '${payload.is_deleted}', updated_date = '${currentDay}'  WHERE code = '${product[0].code}'`
+      const query = `UPDATE products SET name='${newProduct.name}', state='${newProduct.state}', status='${newProduct.status}',is_deleted = ${newProduct.is_deleted}, updated_date = '${currentDay}'  WHERE code = '${product.code}'`
       await this.productDatasource.query(query)
       newProduct = await this.getProductById(code);
       return {
@@ -111,6 +112,10 @@ export class ProductService {
     }
     catch (err) {
       console.log(err)
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Không tìm thấy sản phẩm!'
+      }
     }
   }
 }

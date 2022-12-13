@@ -29,7 +29,7 @@ export class ProductAtbService {
       productAtbList = products.map((att) => {
         return att
       })
-      if(productAtbList.length == 0) {
+      if (productAtbList.length == 0) {
         return {
           status: HttpStatus.OK,
           message: 'Không tìm thấy sản phẩm',
@@ -47,72 +47,80 @@ export class ProductAtbService {
 
   }
   async getProductAtbById(id: number) {
-    const product = await this.productDatasource.query(`SELECT * FROM PRODUCTS WHERE id = '${id}'`)
+    const product = await this.productDatasource.query(`SELECT * FROM PRODUCT_ATTRIBUTES WHERE id = '${id}'`)
     if (!product) throw new NotFoundException(`Không tìm thấy thuộc tính `)
     return product
   }
 
   async createProductAtb(payload: CreateProductAtbDto) {
     try {
-      const currentDay = dayjs(Date()).format("DD/MM/YYYY HH:mm:ss");
-      const queryFindProductAtb = `SELECT * FROM PRODUCT_ATTRIBUTES WHERE product_code='${payload.product_code}'`;
+      const currentDay = dayjs(Date()).format("YYYY/MM/DD HH:mm:ss");
       const queryFindAtb = `SELECT * FROM ATTRIBUTES WHERE code='${payload.attribute_code}'`;
       const queryFindProduct = `SELECT * FROM PRODUCTS WHERE code='${payload.product_code}'`;
       const product = await this.productDatasource.query(queryFindProduct);
       const attribute = await this.productDatasource.query(queryFindAtb);
-      const oldProductAtb = await this.productDatasource.query(queryFindProductAtb);
-      console.log('🚀️ ~ oldProductAtb', oldProductAtb);
 
-      if (oldProductAtb.length > 0) {
-        return {
-          status: HttpStatus.NOT_FOUND,
-          message: 'Sản phẩm đã tồn tại!',
-        };
+      const productAttribute = {
+        attribute_id: attribute[0].id,
+        attribute_name: attribute[0].name,
+        attribute_code: payload.attribute_code,
+        attribute_unit: payload.attribute_unit,
+        attribute_value: payload.attribute_value,
+        product_id: product[0].id,
+        product_name: product[0].name,
+        product_code: payload.product_code,
+        is_deleted: payload.is_deleted,
       }
-      else {
-        const query = `INSERT INTO [Product_attributes] (attribute_id, attribute_name, attribute_code, attribute_unit, attribute_value, product_id, product_name, product_code, is_deleted,created_date, updated_date, created_by, updated_by) VALUES ('${attribute[0].id}', '${attribute[0].name}', '${attribute[0].code}', '${payload.attribute_unit}', '${payload.attribute_value}', '${product[0].id}', '${product[0].name}', '${product[0].code}', 0,'${currentDay}', '${currentDay}', 0, 0)`;
-        await this.productDatasource.query(query);
-        // const result = await this.getProductAtbById(payload.attribute_code);
-        return {
-          status: HttpStatus.OK,
-          message: 'Thêm mới sản phẩm thành công',
-          // result
-        };
+      const query = `INSERT INTO [Product_attributes] (attribute_id, attribute_name, attribute_code, attribute_unit, attribute_value, product_id, product_name, product_code, is_deleted,created_date, updated_date, created_by, updated_by) VALUES ('${productAttribute.attribute_id}', '${productAttribute.attribute_name}', '${productAttribute.attribute_code}', '${productAttribute.attribute_unit}', '${productAttribute.attribute_value}', '${productAttribute.product_id}', '${productAttribute.product_name}', '${productAttribute.product_code}', ${productAttribute.is_deleted},'${currentDay}', '${currentDay}', 0, 0)`;
+      await this.productDatasource.query(query);
+      return {
+        status: HttpStatus.OK,
+        message: 'Thêm mới sản phẩm thành công',
+      };
+    }
+    catch (err) {
+      console.log('🚀️ ~ err', err);
+      return {
+        message: 'Thêm mới thất bại!'
+      }
+    }
+  }
+
+  async updateProductAtb(id: number, payload: UpdateProductAtbDto) {
+    const oldProductAtb = await this.getProductAtbById(id);
+    try {
+      let newProductAtb: ProductAtbDto;
+      const currentDay = dayjs(Date()).format("YYYY/MM/DD HH:mm:ss");
+      const queryFindAtb = `SELECT * FROM ATTRIBUTES WHERE code='${payload.attribute_code || oldProductAtb.attribute_code}'`;
+      const queryFindProduct = `SELECT * FROM PRODUCTS WHERE code='${payload.product_code || oldProductAtb.product_code}'`;
+      const product = await this.productDatasource.query(queryFindProduct);
+      const attribute = await this.productDatasource.query(queryFindAtb);
+      newProductAtb = {
+        attribute_id: attribute[0].id,
+        attribute_name: attribute[0].name,
+        attribute_code: attribute[0].code,
+        attribute_unit: payload.attribute_unit || oldProductAtb[0].attribute_unit,
+        attribute_value: payload.attribute_value || oldProductAtb[0].attribute_value,
+        product_id: product[0].id,
+        product_name: product[0].name,
+        product_code: product[0].code,
+        is_deleted: payload.is_deleted || oldProductAtb[0].is_deleted,
+      }
+      const query = `UPDATE PRODUCT_ATTRIBUTES SET attribute_id=${newProductAtb.attribute_id}, attribute_name= '${newProductAtb.attribute_name}', attribute_code= '${newProductAtb.attribute_code}', attribute_unit= '${newProductAtb.attribute_unit}', attribute_value= ${newProductAtb.attribute_value}, product_id= ${newProductAtb.product_id}, product_name= '${newProductAtb.product_name}', product_code= '${newProductAtb.product_code}', is_deleted= '${newProductAtb.is_deleted}', updated_date= '${currentDay}' WHERE id = ${id}`
+      await this.productDatasource.query(query)
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Update product success',
+        newProductAtb
       }
     }
     catch (err) {
-      console.log(err)
+      console.log('🚀️ ~ Error update Product Attribute:', err);
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'Không tìm thấy thuộc tính sản phẩm!'
+      }
     }
-
-
   }
-  // async updateProduct(code: string, payload: UpdateProductAtbDto) {
-  //   const product = await this.getProductAtbById(code)
-  //   let newProduct = {}
-  //   if (!product) throw new NotFoundException(`Không tìm thấy thuộc tính `);
-  //   const currentDay = dayjs(Date()).format("DD/MM/YYYY HH:mm:ss");
-  //   if (payload.name == "") {
-  //     payload.name = product.name
-  //   }
-
-  //   if (payload.state == "") {
-  //     payload.state = product.state
-  //   }
-  //   if (payload.status == "") {
-  //     payload.state = product.state
-  //   }
-  //   try {
-  //     const query = `UPDATE products SET name ='${payload.name}', state='${payload.state}', status='${payload.status}',is_deleted = '${payload.is_deleted}', updated_date = '${currentDay}'  WHERE code = '${product[0].code}'`
-  //     await this.productDatasource.query(query)
-  //     newProduct = await this.getProductAtbById(code);
-  //     return {
-  //       status: HttpStatus.OK,
-  //       message: 'Update product success',
-  //       newProduct
-  //     }
-  //   }
-  //   catch (err) {
-  //     console.log(err)
-  //   }
-  // }
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 
 export class ProductDto {
@@ -17,20 +17,9 @@ export class ProductDto {
     @IsNotEmpty()
     @IsString()
     status: string;
-
-    @IsString()
-    is_deleted: string;
-
-    @IsString()
-    created_date: string;
-
-    @IsString()
-    updated_date: string;
-
-    @IsString()
-    created_by: string;
-
-    @IsString()
-    updated_by: string;
+    
+    @IsNotEmpty()
+    @IsNumber()
+    is_deleted: number;
     
 }

@@ -1,5 +1,5 @@
 
-import { IsNotEmpty , IsString} from 'class-validator';
+import { IsNotEmpty , IsNumber, IsString} from 'class-validator';
 
 export class CreateProductAtbDto {
     @IsNotEmpty()
@@ -11,10 +11,14 @@ export class CreateProductAtbDto {
     attribute_unit: string;
 
     @IsNotEmpty()
-    @IsString()
+    @IsNumber()
     attribute_value: number;
 
     @IsNotEmpty()
     @IsString()
     product_code: string;
+    
+    @IsNotEmpty()
+    @IsNumber()
+    is_deleted: number
 }
