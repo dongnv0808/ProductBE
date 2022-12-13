@@ -83,7 +83,6 @@ export class AttributesService {
     if (payload.name == '' || payload.name == undefined) {
       payload.name = atb.name;
     }
-
     try {
       const query = `UPDATE Attributes SET name ='${payload.name}', is_deleted = '${payload.is_deleted}', updated_date = '${currentDay}'  WHERE code = '${atb.code}'`;
       await this.productDatasource.query(query);
