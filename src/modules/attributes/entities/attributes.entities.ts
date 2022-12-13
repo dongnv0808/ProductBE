@@ -16,10 +16,10 @@ export class AttributesEntity {
   @Column('bit',{default: 0})
   is_deleted: number;
 
-  @Column('datetime', {default: dayjs(Date()).format("DD/MM/YYYY HH:mm:ss")})
+  @Column('datetime')
   created_date: string;
 
-  @Column('datetime', {default: dayjs(Date()).format("DD/MM/YYYY HH:mm:ss")})
+  @Column('datetime')
   updated_date: string;
 
   @Column('nvarchar', {default: 0})

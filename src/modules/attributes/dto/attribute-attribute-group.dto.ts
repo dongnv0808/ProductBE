@@ -4,7 +4,6 @@ import { IsString } from 'class-validator';
 
 export class CreateAttributeAtbGrDto{
     @IsString()
-
     attribute_code: string;
 
     @IsString()
