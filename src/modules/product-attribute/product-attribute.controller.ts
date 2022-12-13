@@ -18,7 +18,7 @@ import { CreateProductAtbDto } from './dto/create-product-attribute.dto';
 import { UpdateProductAtbDto } from './dto/update-product-attribute.dto';
 import { ProductAtbService } from './product-attribute.service';
 
-@Controller('productAtb')
+@Controller('product_attribute')
 export class ProductAtbController {
   constructor(private readonly productAtbService: ProductAtbService) { }
 
