@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import * as dayjs from 'dayjs'
 @Entity({
   name: 'ATTRIBUTES',
 })

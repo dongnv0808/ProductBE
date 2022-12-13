@@ -6,6 +6,7 @@ import { CreateAttributeGrDto } from './dto/create-attribute-group.dto';
 import { UpdateAttributeGrDto } from './dto/update-attribute-group.dto';
 import { CreateAttributeAtbGrDto } from './dto/attribute-attribute-group.dto';
 import { UpdateAttributeAtbGrDto } from './dto/update-attribute-atbGr.dto';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('attributes')
 export class AttributesController {
@@ -13,10 +14,13 @@ export class AttributesController {
         private _attributesService: AttributesService
     ){}
     @Get()
+    @ApiOperation({summary: 'List all attributes',})
     async showAllAttributes(@Query() query:{offset:number, limit: number}) {
         return  await this._attributesService.showAllAttributes(query.offset,query.limit);
     }
     @Post()
+    @ApiOperation({summary: 'Create attributes',})
+
     async createAttribute(
         @Body() attributeDto : CreateAttributeDto
     ) {
