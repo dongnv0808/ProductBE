@@ -34,7 +34,6 @@ export class ProductAtbController {
   }
   @Put('/:id')
   async updateProductAtb(@Param('id') id: number, @Body() payload: UpdateProductAtbDto) {
-    console.log('🚀️ ~ id', id);
     return this.productAtbService.updateProductAtb(id, payload);
   }
 }
